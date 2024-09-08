@@ -1,0 +1,128 @@
+﻿@{
+    Layout = null;
+}
+
+<div id="conteudo">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+        <h4 class="modal-title">Novo Agendamento</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="ibox" id="ibox2">
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-double-bounce">
+                    <div class="sk-double-bounce1"></div>
+                    <div class="sk-double-bounce2"></div>
+                </div>
+                @{
+                    var query = from state in ViewData.ModelState.Values
+                                from error in state.Errors
+                                select error.ErrorMessage;
+                }
+
+                @if (query.ToList().Any())
+                {
+                    <div style="padding-top: 15px;"></div>
+
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <h3 id="msgRetorno" style="padding-top: 20px">Opa! Algo deu errado :(</h3>
+                        @Html.ValidationSummary()
+
+                    </div>
+                }
+
+                <form id="frmCadastro" method="POST">
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Profissional *</label>
+                            <select class="form-control m-b" name="IdProfissional" id="IdProfissional">
+                                <option value="">Selecione</option>
+                                @foreach (var item in ViewBag.Profissional)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Serviço *</label>
+                            <select class="form-control m-b" name="IdServico" id="IdServico">
+                                <option value="">Selecione...</option>
+                                @foreach (var item in ViewBag.Servicos)
+                                {
+                                    <option value="@item.Value">@item.Text</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Data Agendamento *</label>
+                            <input class="form-control" type="datetime-local" name="DataAgendamentoInicial" id="DataAgendamentoInicial" value="@DateTime.Now.ToString("yyyy-MM-dd HH:mm")">
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-w-m btn-default float-right" id="btnFecharForm" data-dismiss="modal"><strong>Fechar</strong></button>
+        <button class="btn btn-w-m btn-primary float-right" style="color: white" type="button" onclick="salvarConsulta();">
+            <strong>Salvar</strong>
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    function salvarConsulta() {
+
+        if ($('#IdServico').val() == '' ||
+            $('#IdProfissional').val() == '' ||
+            $('#DataAgendamentoInicial').val() == '') {
+            messenger.setInfoMessage("Preencha todos os campos obrigatórios marcados com *!");
+            return;
+        }
+
+        var urlEndereco = '@Url.Action("Create", "Agendamento")';
+
+        $('#ibox2').children('.ibox-content').toggleClass('sk-loading');
+
+        $.ajax({
+            url: urlEndereco,
+            type: "POST",
+            data: $('#frmCadastro').serialize(),
+            success: function (result) {
+
+                $('#ibox2').children('.ibox-content').toggleClass('sk-loading');
+
+                if (result.sucesso) {
+                    messenger.setSuccessMessage("Dados salvo com sucesso!", "Sucesso")
+                        .then(() => {
+                            window.location.reload();
+                        });
+                } else {
+
+                    $('#modalAppSmall').html('');
+                    $('#modalAppSmall').html(result);
+                }
+            },
+            error: function (error) {
+                $('#ibox2').children('.ibox-content').toggleClass('sk-loading');
+                messenger.setErrorMessage("Erro ao salvar, contate o adminstrador.");
+            }
+        });
+    }
+
+</script>

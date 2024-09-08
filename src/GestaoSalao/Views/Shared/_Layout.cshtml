@@ -1,0 +1,172 @@
+﻿@using GestaoSalao.UI.Helpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Salão - @ViewData["Title"]</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Add local styles, mostly for plugins css file -->
+    @if (IsSectionDefined("Styles"))
+    {
+        @RenderSection("Styles", required: false)
+    }
+
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/animate.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+
+    <link rel="stylesheet" href="~/css/sweetalert.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-tagsinput.css" />
+    <link rel="stylesheet" href="~/css/select2.min.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/css/css.css" />
+    <link rel="stylesheet" href="~/fonts/summernote/summernote-bs4.css" />
+
+
+    <style type="text/css">
+        /**************************************************************************/
+        /*wizard conflita com select2, portanto o tracho abaixo é necessário*/
+        /**************************************************************************/
+        .select2-selection__rendered > li {
+            display: inherit !important;
+        }
+
+        .select2-search__field {
+            border: none !important;
+        }
+        /**************************************************************************/
+
+        fieldset {
+            margin: 8px !important;
+            border: 1px solid silver !important;
+            padding: 20px !important;
+            border-radius: 4px !important;
+            border-color: #e7eaec !important;
+        }
+
+        legend {
+            font-size: 0.7rem !important;
+            width: 220px !important;
+        }
+
+        note-editable card-block {
+            height: 1000px !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Wrapper-->
+    <div id="wrapper" class="@Html.PageClass()">
+
+        <!-- Navigation -->
+        <partial name="_Navigation" />
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg @ViewBag.SpecialClass">
+
+            <!-- Top Navbar -->
+            <partial name="_TopNavbar" />
+
+            <!-- Main view  -->
+            <div id="divMain">
+                @RenderBody()
+            </div>
+
+            <!-- Footer -->
+            <partial name="_Footer" />
+
+        </div>
+
+        <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="left:-45%; overflow: auto;">
+
+            <div class="modal-dialog">
+                <div id="modalApp" class="modal-content animated fadeIn" style="width: 1300px"></div>
+            </div>
+
+        </div>
+
+        <div class="modal inmodal" id="myModalSmall" tabindex="-1" role="dialog" aria-hidden="true" style="overflow: auto;">
+
+            <div class="modal-dialog">
+                <div id="modalAppSmall" class="modal-content animated fadeIn" style="width: 600px"></div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- End wrapper-->
+
+    <script src="~/js/jquery.js"></script>
+
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+
+    <script src="~/js/jquery.slimscroll.js"></script>
+
+    <script src="~/js/jquery.metisMenu.js"></script>
+    <script src="~/js/pace.min.js"></script>
+    <script src="~/js/inspinia.js"></script>
+
+    <script src="~/js/skin.config.js"></script>
+    <script src="~/js/script.js" asp-append-version="true"></script>
+
+    <script src="~/js/select2.full.js"></script>
+    <script src="~/js/icheck.min.js"></script>
+    <script src="~/js/select2.js"></script>
+
+    <script src="~/js/icheck.min.js"></script>
+    <script src="~/js/sweetalert.js"></script>
+    <script src="~/js/message.js"></script>
+    <script src="~/fonts/summernote/summernote-bs4.js"></script>
+    <script src="~/js/jquery.nestable.js"></script>
+    <script src="/js/site.js"></script>
+
+    <script type="text/javascript">
+        var checkedAll = false;
+        function selectAll() {
+            checkedAll = !checkedAll;
+            $("input:checkbox.multicheck").prop('checked', checkedAll)
+        }
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+            //TODO: limpar arrows de classes not-sorted
+            $('.not-sorted').each((i, element) => {
+                $(element).children('span').empty();
+            });
+
+            $('.not-sorted > span').empty();
+        });
+
+
+        $('.back-button').click(function () {
+            event.preventDefault();
+            if ('@ViewBag.BackButtonUrl')
+                location.href = '@ViewBag.BackButtonUrl';
+            else
+                history.go(-1);
+        });
+
+        function VerificaErros(responseGeneric) {
+            var errormessage = "";
+            for (var i = 0; i < responseGeneric.ErrorMessage.length; i++) {
+                errormessage = errormessage + responseGeneric.ErrorMessage[i];
+            }
+            messenger.setErrorMessage("Ocorreram erros na tentativa." + errormessage);
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using System.Security.Claims;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    string nome = HttpContextAccessor?.HttpContext?.User?.Claims?.FirstOrDefault(it => it.Type == ClaimTypes.Name)?.Value;
+}
+
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-success" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <a href="@Url.Action("Logout", "Login", new { area = "Security" })">
+                    <i class="fa fa-sign-out"></i> Sair
+                </a>
+            </li>
+            @*<li>
+            <div class="dropdown profile-element">
+                <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                    <span class="block m-t-xs font-bold">@nome <i class="fa fa-user-circle" style="font-size:20px"></i></span>
+                </a>
+                <ul class="dropdown-menu animated fadeInRight m-t-xs" x-placement="bottom-start">
+                    <li><a class="dropdown-item" href="@Url.Action("Logout", "Login")">Sair</a></li>
+                </ul>
+            </div>
+        </li>*@
+        </ul>
+    </nav>
+</div>
+
+@*<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <div class="dropdown profile-element">
+                    <ul class="fadeInRight m-t-xs" x-placement="bottom-start">
+                        <li><a class="dropdown-item" href="@Url.Action("Logout", "Login")">Sair</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>*@

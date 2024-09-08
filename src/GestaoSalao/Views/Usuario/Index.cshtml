@@ -1,0 +1,156 @@
+﻿@model IEnumerable<GestaoSalao.Models.Entity.Usuario>
+
+@{
+    ViewData["Title"] = "Usuários";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Cadastro Usuários</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Cadastros</a>
+            </li>
+            <li class="breadcrumb-item">
+                <strong>Usuários</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight" style="margin-top: 0px">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <p>
+                        <button class="btn btn-success " type="button" onclick="abrirModal();">
+                            <i class="fa fa-plus"></i>&nbsp;<span class="bold">Incluir</span>
+                        </button>
+                    </p>
+
+                    <table class="footable table table-bordered" data-paging-position="left">
+                        <thead>
+                            <tr>
+                                <th class="not-sorted action-buttons-cell" style="text-align: left">Nome</th>
+                                <th class="not-sorted action-buttons-cell" style="text-align: left">CPF</th>
+                                <th class="not-sorted action-buttons-cell" style="text-align: left">Tipo</th>
+                                <th class="not-sorted action-buttons-cell" style="text-align:center">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    if (Model.Any())
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td><span>@item.Nome</span></td>
+                                                <td><span>@item.Cpf</span></td>
+                                                <td><span>@item.TipoFormatada</span></td>
+                                                <td style="padding-top:4px; padding-bottom:0; text-align:center">
+
+                                                    <button class="btn btn-info action-button" style="font-size:5px" type="button" title="Alterar" onclick="abrirModalEdit('@item.Id');">
+                                                        <i class="fa fa-edit" style="font-size:10px"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+@section Styles {
+
+    <style>
+        .ibox-tools .dropdown-toggle::after {
+            display: none !important;
+        }
+
+        .dropdown-toggle {
+            display: none !important;
+        }
+
+            .dropdown-toggle::after {
+                display: none !important;
+            }
+    </style>
+
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" href="~/css/footable/footable.bootstrap.min.css" />
+}
+
+@section Scripts {
+    <script src="~/js/inspinia.js"></script>
+
+    <script src="~/js/footable.core.min.js"></script>
+    <script src="~/js/footable.filtering.min.js"></script>
+    <script src="~/js/footable.paging.min.js"></script>
+    <script src="~/js/footable.sorting.min.js"></script>
+    <script src="~/lib/jquery-mask-plugin-master/jquery.mask.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setTable();
+        });
+
+        function setTable() {
+            $('.footable').footable({
+                "paging": {
+                    "enabled": true,
+                    "size": 10
+                },
+                "filtering": {
+                    "enabled": true,
+                    "placeholder": "Pesquisar"
+                },
+                "empty": "Sem Registros",
+                "sorting": {
+                    "enabled": true
+                }
+            });
+
+            $('.not-sorted').children('span').empty();
+        }
+
+        function abrirModal() {
+
+            var url = '@Url.Action("Create", "Usuario")'
+
+            $.get(url, function (data) {
+
+                $("#modalAppSmall").html(data);
+                $("#myModalSmall").modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+
+        function abrirModalEdit(id) {
+
+            var url = '@Url.Action("Edit", "Usuario")' + `?id=${id}`;
+
+            $.get(url, function (data) {
+
+                $("#modalAppSmall").html(data);
+                $("#myModalSmall").modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+    </script>
+}

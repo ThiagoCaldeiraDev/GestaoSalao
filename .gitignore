@@ -1,0 +1,21 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/src/GestaoSalao/bin/Debug
+/src/GestaoSalao/obj
+/src/GestaoSalao.Data/bin/Debug/net8.0
+/src/GestaoSalao.Data/obj
+/src/GestaoSalao.ExternalServices/obj
+/src/GestaoSalao.ExternalServices/bin/Debug/net6.0
+/src/GestaoSalao.IoC/bin/Debug/net8.0
+/src/GestaoSalao.IoC/obj
+/src/GestaoSalao.Models/bin/Debug/net8.0
+/src/GestaoSalao.Models/bin/Debug/net6.0
+/src/GestaoSalao.Models/obj
+/src/GestaoSalao.Services/bin/Debug
+/src/GestaoSalao.Services/obj
+/src/GestaoSalao.Utils/obj
+/src/GestaoSalao.Utils/.vs/GestaoSalao.Utils/v16
+/.vs
+/src/Seguro/obj

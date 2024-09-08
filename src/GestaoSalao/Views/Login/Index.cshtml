@@ -1,0 +1,106 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestão Salão - Login</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/animate.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+
+    <link rel="stylesheet" href="~/css/sweetalert.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-tagsinput.css" />
+    <link rel="stylesheet" href="~/css/select2.min.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/css/css.css" />
+    <link rel="stylesheet" href="~/fonts/summernote/summernote-bs4.css" />
+</head>
+<body class="gray-bg" style="background: url('@Url.Content("~/images/Fundo.jpg")') no-repeat;width: 100%;height: 100vh;background-size: cover;">
+    <div class="loginColumns animated fadeInDown">
+        <div class="row">
+
+            <div class="col-md-6">
+            </div>
+
+            <div class="col-md-6">
+                <h1 class="font-bold" style="color:ghostwhite">Gestão Salão</h1>
+                <div class="">
+                    @{
+                        if (ViewBag.Erro != null)
+                        {
+                            if (!string.IsNullOrEmpty(ViewBag.Erro))
+                            {
+                                <div style="color: red;" align="center">
+                                    @ViewBag.Erro
+                                </div>
+                            }
+                        }
+                    }
+                    <form class="m-t" role="form" asp-action="logon" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control cpfCNPJ" placeholder="CPF" name="cpf" required="">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Senha" name="senha" required="">
+                        </div>
+                        <button type="submit" class="btn btn-success block full-width m-b">Login</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<script src="~/js/jquery.js"></script>
+
+<script src="~/js/popper.min.js"></script>
+<script src="~/js/bootstrap.js"></script>
+
+<script src="~/js/jquery.slimscroll.js"></script>
+
+<script src="~/js/jquery.metisMenu.js"></script>
+<script src="~/js/pace.min.js"></script>
+<script src="~/js/inspinia.js"></script>
+
+<script src="~/js/skin.config.js"></script>
+<script src="~/js/script.js" asp-append-version="true"></script>
+
+<script src="~/js/select2.full.js"></script>
+<script src="~/js/icheck.min.js"></script>
+<script src="~/js/select2.js"></script>
+
+<script src="~/js/icheck.min.js"></script>
+<script src="~/js/sweetalert.js"></script>
+<script src="~/js/message.js"></script>
+<script src="~/fonts/summernote/summernote-bs4.js"></script>
+<script src="~/js/jquery.nestable.js"></script>
+<script src="/js/site.js"></script>
+<script src="~/lib/jquery-mask-plugin-master/jquery.mask.min.js"></script>
+<script>
+    ApplyMasksProcurador();
+    function ApplyMasksProcurador() {
+
+        var CpfCnpjMaskBehavior = function (val) {
+            return '000.000.000-009';
+        },
+            cpfCnpjpOptions = {
+                onKeyPress: function (val, e, field, options) {
+                    field.mask(CpfCnpjMaskBehavior.apply({}, arguments), options);
+                }
+            };
+
+        $('.cpfCNPJ').mask(CpfCnpjMaskBehavior, cpfCnpjpOptions);
+    }
+</script>

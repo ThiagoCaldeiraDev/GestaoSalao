@@ -1,0 +1,145 @@
+﻿@model GestaoSalao.Models.Entity.Servico
+
+@{
+    Layout = null;
+}
+
+<div id="conteudo">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Fechar</span></button>
+        @if (Model.Id > 0)
+        {
+            <h4 class="modal-title">Editar Serviço</h4>
+        }
+        else
+        {
+            <h4 class="modal-title">Novo Serviço</h4>
+        }
+    </div>
+
+    <div class="modal-body">
+        <div class="ibox" id="ibox2">
+            <div class="ibox-content">
+                <div class="sk-spinner sk-spinner-double-bounce">
+                    <div class="sk-double-bounce1"></div>
+                    <div class="sk-double-bounce2"></div>
+                </div>
+                @{
+                    var query = from state in ViewData.ModelState.Values
+                                from error in state.Errors
+                                select error.ErrorMessage;
+                }
+
+                @if (query.ToList().Any())
+                {
+                    <div style="padding-top: 15px;"></div>
+
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <h3 id="msgRetorno" style="padding-top: 20px">Opa! Algo deu errado :(</h3>
+                        @Html.ValidationSummary()
+
+                    </div>
+                }
+
+                <form id="frmCadastro" method="POST">
+
+                    <input type="hidden" id="idChave" name="Id" value="@Model.Id" />
+                    <input type="hidden" id="guidConsulta" name="Guid" value="@Model.Guid" />
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Nome *</label>
+                            <input class="form-control text-box single-line" type="text" name="Nome" id="Nome" value="@Model.Nome">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Descrição *</label>
+                            <input class="form-control text-box single-line" type="text" name="Descricao" id="Descricao" value="@Model.Descricao">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Valor *</label>
+                            <input class="form-control text-box single-line valorPercentual" type="text" name="Valor" id="Valor" value="@Model.Valor">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label>Tempo *</label>
+                            <input class="form-control text-box single-line" type="time" name="Tempo" id="Tempo" value="@(Model.Tempo == null ? "" : Model.Tempo.ToString("HH:mm"))">
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-w-m btn-default float-right" id="btnFecharForm" data-dismiss="modal"><strong>Fechar</strong></button>
+        <button class="btn btn-w-m btn-primary float-right" style="color: white" type="button" onclick="salvarConsulta();">
+            <strong>Salvar</strong>
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    ApplyMasksProcurador();
+    function ApplyMasksProcurador() {
+
+        $('.valorPercentual').mask('00000,00', { reverse: true });
+    }
+
+    function salvarConsulta() {
+
+        if ($('#Nome').val() == '' ||
+            $('#Descricao').val() == '' ||
+            $('#Valor').val() == '' ||
+            $('#Tempo').val() == '') {
+            messenger.setInfoMessage("Preencha todos os campos obrigatórios marcados com *!");
+            return;
+        }
+
+        var urlEndereco = parseInt($('#idChave').val()) == 0
+            ? '@Url.Action("Create", "Servico")'
+            : '@Url.Action("Edit", "Servico")';
+
+        $('#ibox2').children('.ibox-content').toggleClass('sk-loading');
+
+        $.ajax({
+            url: urlEndereco,
+            type: "POST",
+            data: $('#frmCadastro').serialize(),
+            success: function (result) {
+
+                $('#ibox2').children('.ibox-content').toggleClass('sk-loading');
+
+                if (result.sucesso) {
+                    messenger.setSuccessMessage("Dados salvo com sucesso!", "Sucesso")
+                        .then(() => {
+                            window.location.reload();
+                        });
+                } else {
+
+                    $('#modalAppSmall').html('');
+                    $('#modalAppSmall').html(result);
+                }
+            },
+            error: function (error) {
+                $('#ibox2').children('.ibox-content').toggleClass('sk-loading');
+                messenger.setErrorMessage("Erro ao salvar, contate o adminstrador.");
+            }
+        });
+    }
+
+</script>

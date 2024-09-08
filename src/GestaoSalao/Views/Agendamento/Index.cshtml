@@ -1,0 +1,151 @@
+﻿@{
+    ViewData["Title"] = "Vendas";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Agendamento Serviços</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Agendamento</a>
+            </li>
+            <li class="breadcrumb-item">
+                <strong>Serviços</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight" style="margin-top: 0px">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-content">
+                    <p>
+                        <button class="btn btn-success " type="button" onclick="abrirModal();">
+                            <i class="fa fa-plus"></i>&nbsp;<span class="bold">Incluir</span>
+                        </button>
+                    </p>
+
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+
+    <style>
+        .ibox-tools .dropdown-toggle::after {
+            display: none !important;
+        }
+
+        .dropdown-toggle {
+            display: none !important;
+        }
+
+            .dropdown-toggle::after {
+                display: none !important;
+            }
+    </style>
+
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/lib/fullcalendar/fullcalendar.css">
+}
+
+@section Scripts {
+    <script src="~/js/inspinia.js"></script>
+
+    <script src="/js/moment/moment.min.js"></script>
+    <script src="/js/fullcalendar/jquery-ui.min.js"></script>
+    <script src="/js/fullcalendar/fullcalendar.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            listEvents();
+        });
+
+        function listEvents() {
+            var url = '@Url.Action("Buscar", "Agendamento")'
+            $.post(url)
+                .done((data) => {
+                    initCalendar(data);
+                });
+        }
+
+        function initCalendar(data) {
+
+            $('#calendar').fullCalendar('destroy');
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'agendaDay,agendaWeek,month,listMonth'
+                },
+                locale: 'pt-br',
+                defaultView: 'month',
+                editable: true,
+                selectable: false,
+                events: data,
+                allDayDefault: false,
+                allDaySlot: false,
+                displayEventTime: true,
+                droppable: true,
+                ignoreTimezone: false,
+                slotLabelFormat: ['H:mm'],
+                timeFormat: 'HH:mm',
+                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sabado'],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                buttonText: {
+                    today: "Hoje",
+                    month: "Mês",
+                    week: "Semana",
+                    day: "Dia"
+                },
+                eventClick: function (event) {
+                    abrirModalDetalhes(event.idAgendamento);
+                },
+                eventConstraint: {
+                    start: moment().format('YYYY-MM-DD'),
+                    end: '2100-01-01'
+                },
+                eventOverlap: function (stillEvent, movingEvent) {
+                    return stillEvent.allDay && movingEvent.allDay;
+                }
+            });
+        }
+
+        function abrirModal() {
+
+            var url = '@Url.Action("Create", "Agendamento")'
+
+            $.get(url, function (data) {
+
+                $("#modalAppSmall").html(data);
+                $("#myModalSmall").modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+
+        function abrirModalDetalhes(idAgendamento) {
+
+            var url = '@Url.Action("Detalhes", "Agendamento")' + `?idAgendamento=${idAgendamento}`;
+
+            $.get(url, function (data) {
+
+                $("#modalAppSmall").html(data);
+                $("#myModalSmall").modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+    </script>
+}

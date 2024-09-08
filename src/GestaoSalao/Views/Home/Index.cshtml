@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <br />
+    <br />
+    <h3>Bem vindo(a)!</h3>
+
+</div>
+
+@section Styles {
+
+    <link rel="stylesheet" href="~/css/sweetalert.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-tagsinput.css" />
+    <link rel="stylesheet" href="~/css/select2.min.css" />
+    <link rel="stylesheet" href="~/css/footable.bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/footable.core.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+
+    <style type="text/css">
+        /**************************************************************************/
+        /*wizard conflita com select2, portanto o tracho abaixo é necessário*/
+        /**************************************************************************/
+        .select2-selection__rendered > li {
+            display: inherit !important;
+        }
+
+        .select2-search__field {
+            border: none !important;
+        }
+        /**************************************************************************/
+
+        fieldset {
+            margin: 8px !important;
+            border: 1px solid silver !important;
+            padding: 20px !important;
+            border-radius: 4px !important;
+            border-color: #e7eaec !important;
+        }
+
+        legend {
+            font-size: 0.7rem !important;
+            width: 220px !important;
+        }
+
+        note-editable card-block {
+            height: 1000px !important;
+        }
+    </style>
+
+    <link rel="stylesheet" href="~/lib/summernote/summernote-bs4.css" />
+    <link rel="stylesheet" href="~/css/css.css" />
+    <link rel="stylesheet" href="~/css/select2.min.css" />
+}
+
+@section Scripts {
+    <script src="~/js/inspinia.js"></script>
+
+    <script src="~/js/select2.full.js"></script>
+    <script src="~/js/icheck.min.js"></script>
+    <script src="~/js/jquery.bootstrap-duallistbox.js"></script>
+    <script src="~/js/select2.js"></script>
+
+    <script src="~/js/footable.all.min.js"></script>
+    <script src="~/js/footable.min.js"></script>
+    <script src="~/js/footable.filter.min.js"></script>
+    <script src="~/js/footable.grid.min.js"></script>
+    <script src="~/js/footable.paginate.min.js"></script>
+    <script src="~/js/footable.sort.min.js"></script>
+
+    <script src="~/js/icheck.min.js"></script>
+
+    <script src="~/js/sweetalert.js"></script>
+    <script src="~/lib/summernote/summernote-bs4.js"></script>
+
+    <script src="~/js/jquery.nestable.js"></script>
+    <script src="~/js/select2.full.min.js"></script>
+}
